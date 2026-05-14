@@ -8,7 +8,7 @@ seed: 42  # Fixed for full reproducibility across runs
 data:
   dataset: cifar10
   root: ./data
-  num_workers: 4
+  num_workers: 6
   # Normalization statistics computed from TRAINING SET ONLY (data leakage prevention)
   # These are the canonical CIFAR-10 per-channel mean/std
   mean: [0.4914, 0.4822, 0.4465]
