@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CIFAR-10 Grad-CAM Research
 
 Grad-CAM implementation from scratch, trained on CIFAR-10 across three model variants.
@@ -29,3 +30,7 @@ configs/config.yaml
 outputs/           — heatmaps, curves, eval plots
 LOG.md             — research diary
 ```
+=======
+# deeplearningp
+project
+>>>>>>> 77728fc4e38bbfdf36cb6973923b6b9e64601928
