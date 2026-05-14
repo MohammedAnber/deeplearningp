@@ -1,0 +1,71 @@
+# ============================================================
+# CIFAR-10 Grad-CAM Research Project — Master Config
+# Every value here has a reason. See comments.
+# ============================================================
+
+seed: 42  # Fixed for full reproducibility across runs
+
+data:
+  dataset: cifar10
+  root: ./data
+  num_workers: 4
+  # Normalization statistics computed from TRAINING SET ONLY (data leakage prevention)
+  # These are the canonical CIFAR-10 per-channel mean/std
+  mean: [0.4914, 0.4822, 0.4465]
+  std:  [0.2470, 0.2435, 0.2616]
+
+augmentation:
+  # RandomCrop with padding=4: shifts image up to 4px in any direction
+  # Preserves content while adding translation invariance — standard for CIFAR
+  random_crop_size: 32
+  random_crop_padding: 4
+  # Horizontal flip: valid because objects appear mirrored in natural photos
+  # NO vertical flip: objects don't appear upside down in real-world photos
+  horizontal_flip_prob: 0.5
+
+training:
+  epochs: 100          # Enough for ResNet18 to converge; early stopping guards against overfit
+  batch_size: 128      # Standard for CIFAR-10; fits comfortably in GPU memory
+  lr: 0.01             # Lower than typical 0.1 for pretrained — avoids destroying ImageNet weights
+  momentum: 0.9        # SGD momentum; standard for image classification
+  weight_decay: 0.0005 # L2 regularization; prevents memorization on small dataset
+  # Cosine annealing: smoothly decays LR, avoids sharp LR drops causing instability
+  lr_scheduler: cosine_annealing
+  t_max: 100           # Full period = total epochs
+
+models:
+  # Three models, each with a clear scientific motivation:
+  # 1. baseline_cnn   — simple 3-conv architecture, comparison target
+  # 2. resnet18_scratch — ResNet18 trained from random init, shows architecture benefit
+  # 3. resnet18_pretrained — ResNet18 from ImageNet, shows transfer learning benefit
+  save_dir: ./models
+  baseline_cnn:
+    num_conv_layers: 3
+    channels: [32, 64, 128]
+    dropout: 0.5
+  resnet18:
+    pretrained: true  # Switch to false for scratch variant
+    freeze_backbone: false  # Fine-tune all layers, not just head
+
+gradcam:
+  # layer4[-1] is the final conv block in ResNet18
+  # Captures highest-level semantic features (objects, not edges)
+  # Baseline CNN uses layer3 (its final conv layer)
+  resnet_target_layer: "layer4"
+  baseline_target_layer: "layer3"
+  # Upsample method: bilinear is smooth and sufficient for 32x32 CIFAR images
+  upsample_mode: bilinear
+  # ReLU applied after weighted sum — only positive contributions matter
+  apply_relu: true
+
+evaluation:
+  # Spearman r > 0.95 between custom and library Grad-CAM validates implementation
+  library_parity_threshold: 0.95
+  # Classes to visualize in heatmap grid (all 10)
+  classes: [airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck]
+
+paths:
+  outputs: ./outputs
+  heatmaps: ./outputs/heatmaps
+  curves: ./outputs/curves
+  sanity_checks: ./outputs/sanity_checks
