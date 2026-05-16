@@ -1,9 +1,5 @@
 # Research Log — CIFAR-10 Grad-CAM Project
 
-> **Rule:** Write an entry every time you run an experiment, get a result, hit a bug, or make a decision.
-> Format: `## YYYY-MM-DD — What happened`
-
----
 
 ## Project Overview
 
@@ -16,13 +12,9 @@
 
 **Stack:** Python 3.10+, PyTorch, torchvision, CIFAR-10
 
----
 
-## Week 1
 
----
-
-### DAY 1 — Project Setup & Repository Init
+# — Project Setup & Repository Init
 
 **What I did:**
 - Created repo structure, added all source files
@@ -39,7 +31,7 @@
 
 ---
 
-### DAY 2 — Data Pipeline Verification
+# — Data Pipeline Verification
 
 **Command run:**
 ```bash
@@ -67,7 +59,7 @@ python main.py --stages data
 
 ---
 
-### DAY 3 — Baseline CNN Training
+# — Baseline CNN Training
 
 **Command run:**
 ```bash
@@ -119,7 +111,7 @@ python main.py --stages train --models resnet18_scratch
 
 ---
 
-### DAY 5 — ResNet18 Pretrained Training
+# — ResNet18 Pretrained Training
 
 **Command run:**
 ```bash
@@ -143,13 +135,8 @@ Transfer learning hypothesis: ImageNet features (edges, textures, shapes) are re
 
 **Observations:**
 
----
 
-## Week 2
-
----
-
-### DAY 8 — Evaluation & Accuracy Comparison
+# — Evaluation & Accuracy Comparison
 
 **Command run:**
 ```bash
@@ -179,7 +166,7 @@ python main.py --stages eval
 
 ---
 
-### DAY 9 — Grad-CAM Heatmap Generation
+# — Grad-CAM Heatmap Generation
 
 **Command run:**
 ```bash
@@ -206,7 +193,7 @@ python main.py --stages gradcam
 
 ---
 
-### DAY 10 — Library Parity Validation
+# — Library Parity Validation
 
 **Command run:**
 ```bash
@@ -236,7 +223,7 @@ python main.py --stages parity
 
 ---
 
-### DAY 11 — Adebayo Sanity Checks
+# — Adebayo Sanity Checks
 
 **What these tests prove:**
 Adebayo et al. (2018) "Sanity Checks for Saliency Maps" showed that many saliency methods produce visually plausible maps even on randomly initialised models — which means they may be measuring data statistics, not model internals.
@@ -264,7 +251,7 @@ python main.py --stages sanity --sanity-test both --sanity-class 0
 
 ---
 
-### DAY 12 — Analysis & Write-up
+# — Analysis & Write-up
 
 **Key questions to answer in report:**
 
