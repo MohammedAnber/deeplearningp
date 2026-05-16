@@ -85,7 +85,7 @@ Expected: `~2.3026` (= ln(10), cross-entropy for uniform 10-class random output)
 
 ---
 
-### DAY 4 — ResNet18 Scratch Training
+# — ResNet18 Scratch Training
 
 **Command run:**
 ```bash
@@ -268,28 +268,19 @@ python main.py --stages sanity --sanity-test both --sanity-class 0
 | resnet18_scratch | | | |
 | resnet18_pretrained | | | |
 
-**Final conclusions:** _(fill in)_
 
----
 
-## Bugs & Fixes Log
-
-| Date | Bug | Fix | File |
-|------|-----|-----|------|
-| | | | |
-
----
 
 ## Decisions Log
 
-| Date | Decision | Reason |
-|------|----------|--------|
-| Day 1 | seed=42 everywhere | Full reproducibility |
-| Day 1 | SGD not Adam | Adam overfits more on CIFAR-10 per literature |
-| Day 1 | Cosine annealing LR | Avoids abrupt drops; smooth convergence |
-| Day 1 | Raw logit in Grad-CAM backward | Avoids softmax class competition |
-| Day 1 | No vertical flip | Objects don't appear upside-down in natural images |
-| | | |
+| Decision | Reason |
+|----------|--------|
+| seed=42 everywhere | Full reproducibility |
+| SGD not Adam | Adam overfits more on CIFAR-10 per literature |
+| Cosine annealing LR | Avoids abrupt drops; smooth convergence |
+| Raw logit in Grad-CAM backward | Avoids softmax class competition |
+| No vertical flip | Objects don't appear upside-down in natural images |
+| | |
 
 ---
 
