@@ -7,15 +7,15 @@ venv/
 env/
 *.egg-info/
 
-# Data (large — don't commit raw CIFAR)
+# Data (large - don't commit raw CIFAR)
 data/cifar-10-batches-py/
 data/*.tar.gz
 data/*.zip
 
-# Model weights (large — use git-lfs or cloud storage)
+# Model weights (large - use git-lfs or cloud storage)
 models/*.pth
 
-# Outputs (commit selectively — heatmaps & curves yes, logs maybe)
+# Outputs (commit selectively - heatmaps & curves yes, logs maybe)
 outputs/train.log
 outputs/main.log
 
