@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# =============================================================================
 # run_experiments.sh — 2-Week Experiment Sequence
 # CIFAR-10 Grad-CAM Research Project
-#
 # Usage:
 #   chmod +x run_experiments.sh
 #   ./run_experiments.sh              # Run everything from Day 1
@@ -18,22 +16,19 @@
 #   - git remote already configured (see setup section below)
 #   - Python env activated with all dependencies installed
 #   - GPU recommended for training stages (CPU will work, just slower)
-# =============================================================================
 
 set -euo pipefail   # exit on error, unset vars, pipe failures
 
-# ─────────────────────────────────────────────
 # CONFIG — edit these
-# ─────────────────────────────────────────────
+
 REMOTE="origin"
 BRANCH="main"
 CONFIG="configs/config.yaml"
 DRY_RUN=false
 START_FROM="day1"
 
-# ─────────────────────────────────────────────
 # Argument parsing
-# ─────────────────────────────────────────────
+
 for arg in "$@"; do
   case $arg in
     --dry-run)    DRY_RUN=true ;;
@@ -42,9 +37,8 @@ for arg in "$@"; do
   esac
 done
 
-# ─────────────────────────────────────────────
 # Helpers
-# ─────────────────────────────────────────────
+
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; NC='\033[0m'
 
 log()     { echo -e "${BLUE}[$(date '+%H:%M:%S')]${NC} $*"; }
@@ -84,9 +78,8 @@ should_run() {
   return 1
 }
 
-# ─────────────────────────────────────────────
 # PRE-FLIGHT CHECKS
-# ─────────────────────────────────────────────
+
 log "Pre-flight checks..."
 command -v python  >/dev/null 2>&1 || error "python not found — activate your virtualenv"
 command -v git     >/dev/null 2>&1 || error "git not found"
@@ -101,14 +94,11 @@ mkdir -p outputs/{heatmaps,curves,sanity_checks,eval} models data configs
 # Copy config to configs/ if it's in root
 [ -f "config.yaml" ] && [ ! -f "configs/config.yaml" ] && cp config.yaml configs/config.yaml
 
-# ─────────────────────────────────────────────
-# WEEK 1
-# ─────────────────────────────────────────────
 
-# ── DAY 1 — Setup & initial commit ───────────
+#  Setup & initial commit 
 if should_run day1; then
   echo ""
-  log "═══ DAY 1: Project Setup & Initial Commit ═══"
+  log "═══ Project Setup & Initial Commit ═══"
 
   # Verify all source files exist
   for f in main.py train.py models.py data.py gradcam.py utils.py sanity_checks.py configs/config.yaml; do
@@ -191,14 +181,14 @@ EOF
   # Generate requirements.txt
   run "pip freeze > requirements.txt 2>/dev/null || echo 'torch torchvision numpy matplotlib scipy pyyaml' > requirements.txt"
 
-  commit_and_push "initial project structure, config, source files" "day1"
+  commit_and_push "initial project structure, config, source files" 
 fi
 
 
-# ── DAY 2 — Data Pipeline Verification ───────
+# Data Pipeline Verification
 if should_run day2; then
   echo ""
-  log "═══ DAY 2: Data Pipeline Verification ═══"
+  log "═══ Data Pipeline Verification ═══"
 
   log "Running data sanity checks..."
   run "python main.py --stages data --config $CONFIG 2>&1 | tee outputs/data_checks.log"
@@ -206,14 +196,14 @@ if should_run day2; then
   success "Data checks complete"
   log "→ Check outputs/sanity_checks/data_samples.png visually before committing"
 
-  commit_and_push "data sanity checks passed — class balance verified, sample grid saved" "day2"
+  commit_and_push "data sanity checks passed — class balance verified, sample grid saved"
 fi
 
 
-# ── DAY 3 — Baseline CNN Training ────────────
+# Baseline CNN Training
 if should_run day3; then
   echo ""
-  log "═══ DAY 3: Baseline CNN Training ═══"
+  log "═══ Baseline CNN Training ═══"
   log "This may take 20-40 min on CPU, ~5 min on GPU"
 
   run "python main.py --stages train --models baseline_cnn --config $CONFIG 2>&1 | tee outputs/train_baseline.log"
@@ -222,46 +212,42 @@ if should_run day3; then
   log "→ Check outputs/curves/baseline_cnn_curves.png"
   log "→ Verify epoch-1 loss ≈ 2.3026 in the log"
 
-  commit_and_push "baseline_cnn training complete — curves + best checkpoint saved" "day3"
+  commit_and_push "baseline_cnn training complete — curves + best checkpoint saved"
 fi
 
 
-# ── DAY 4 — ResNet18 Scratch Training ────────
+# ResNet18 Scratch Training 
 if should_run day4; then
   echo ""
-  log "═══ DAY 4: ResNet18 Scratch Training ═══"
+  log "═══ ResNet18 Scratch Training ═══"
 
   run "python main.py --stages train --models resnet18_scratch --config $CONFIG 2>&1 | tee outputs/train_resnet_scratch.log"
 
   success "ResNet18 scratch training complete"
   log "→ Check outputs/curves/resnet18_scratch_curves.png"
 
-  commit_and_push "resnet18_scratch training complete" "day4"
+  commit_and_push "resnet18_scratch training complete"
 fi
 
 
-# ── DAY 5 — ResNet18 Pretrained Training ─────
+# ResNet18 Pretrained Training
 if should_run day5; then
   echo ""
-  log "═══ DAY 5: ResNet18 Pretrained Training ═══"
+  log "═══ ResNet18 Pretrained Training ═══"
 
   run "python main.py --stages train --models resnet18_pretrained --config $CONFIG 2>&1 | tee outputs/train_resnet_pretrained.log"
 
   success "ResNet18 pretrained training complete"
   log "→ Compare curves with scratch variant — pretrained should converge faster"
 
-  commit_and_push "resnet18_pretrained training complete — all 3 models trained" "day5"
+  commit_and_push "resnet18_pretrained training complete — all 3 models trained"
 fi
 
 
-# ─────────────────────────────────────────────
-# WEEK 2
-# ─────────────────────────────────────────────
-
-# ── DAY 8 — Evaluation ───────────────────────
+# Evaluation
 if should_run day8; then
   echo ""
-  log "═══ DAY 8: Full Evaluation ═══"
+  log "═══ Full Evaluation ═══"
 
   run "python main.py --stages eval --config $CONFIG 2>&1 | tee outputs/eval.log"
 
@@ -270,14 +256,14 @@ if should_run day8; then
   log "→ outputs/eval/*_confusion.png — per-model confusion matrices"
   log "→ Check: cat/dog and automobile/truck are the highest-confusion pairs"
 
-  commit_and_push "evaluation complete — confusion matrices + accuracy comparison saved" "day8"
+  commit_and_push "evaluation complete — confusion matrices + accuracy comparison saved"
 fi
 
 
-# ── DAY 9 — Grad-CAM Heatmaps ────────────────
+# Grad-CAM Heatmaps 
 if should_run day9; then
   echo ""
-  log "═══ DAY 9: Grad-CAM Heatmap Generation ═══"
+  log "═══ Grad-CAM Heatmap Generation ═══"
 
   run "python main.py --stages gradcam --config $CONFIG 2>&1 | tee outputs/gradcam.log"
 
@@ -285,14 +271,14 @@ if should_run day9; then
   log "→ outputs/heatmaps/*_gradcam_grid.png — one grid per model"
   log "→ Expected: pretrained shows sharpest, most semantically localised heatmaps"
 
-  commit_and_push "grad-cam heatmap grids generated for all 3 models" "day9"
+  commit_and_push "grad-cam heatmap grids generated for all 3 models"
 fi
 
 
-# ── DAY 10 — Library Parity Validation ───────
+# Library Parity Validation 
 if should_run day10; then
   echo ""
-  log "═══ DAY 10: Library Parity Check (Spearman r > 0.95) ═══"
+  log "═══ Library Parity Check (Spearman r > 0.95) ═══"
 
   # Install pytorch-grad-cam if not already installed
   python -c "import pytorch_grad_cam" 2>/dev/null || {
@@ -305,14 +291,14 @@ if should_run day10; then
   success "Parity check complete"
   log "→ Spearman r values logged above — must be > 0.95 to pass"
 
-  commit_and_push "library parity validation — Spearman r results logged" "day10"
+  commit_and_push "library parity validation — Spearman r results logged" 
 fi
 
 
-# ── DAY 11 — Adebayo Sanity Checks ───────────
+# Adebayo Sanity Checks 
 if should_run day11; then
   echo ""
-  log "═══ DAY 11: Adebayo Sanity Checks ═══"
+  log "═══  Adebayo Sanity Checks ═══"
   log "Running both model randomization + data randomization tests"
   log "This step re-trains a model on shuffled labels — may take ~20 min"
 
@@ -322,14 +308,14 @@ if should_run day11; then
   log "→ Check outputs/sanity_checks/ for heatmap comparison grids"
   log "→ Grad-CAM maps should change visibly as model weights are randomised"
 
-  commit_and_push "adebayo sanity checks complete — model + data randomization tests passed" "day11"
+  commit_and_push "adebayo sanity checks complete — model + data randomization tests passed"
 fi
 
 
-# ── DAY 12 — Final Analysis & Clean-up ───────
+#  Final Analysis & Clean-up
 if should_run day12; then
   echo ""
-  log "═══ DAY 12: Final Analysis & Project Wrap-up ═══"
+  log "═══ Final Analysis & Project Wrap-up ═══"
 
   # Run the full pipeline one final time to ensure all outputs are fresh and consistent
   log "Running full pipeline to regenerate all outputs consistently..."
@@ -343,7 +329,7 @@ if should_run day12; then
     echo ""
   fi
 
-  # Remind about LOG.md
+  # LOG.md
   warn "Fill in all results in LOG.md before final commit!"
   warn "Make sure LOG.md tables are complete with actual numbers."
 
