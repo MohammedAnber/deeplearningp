@@ -82,9 +82,7 @@ from utils import denormalize
 
 logger = get_logger("sanity_checks", log_file="outputs/sanity_checks.log")
 
-# ─────────────────────────────────────────────
 # Similarity metrics
-# ─────────────────────────────────────────────
 
 def spearman_r(map_a: np.ndarray, map_b: np.ndarray) -> float:
     """Spearman rank correlation between two flattened heatmaps."""
@@ -103,9 +101,7 @@ def ssim_score(map_a: np.ndarray, map_b: np.ndarray) -> float:
     return float(ssim(map_a, map_b, data_range=1.0))
 
 
-# ─────────────────────────────────────────────
 # Helper: compute a single Grad-CAM heatmap
-# ─────────────────────────────────────────────
 
 def compute_cam(
     model: nn.Module,
@@ -125,9 +121,7 @@ def compute_cam(
     return cam  # already [0,1] normalized in GradCAM.__call__
 
 
-# ─────────────────────────────────────────────
 # Layer enumeration for cascading randomization
-# ─────────────────────────────────────────────
 
 def get_named_layers_top_down(model: nn.Module) -> list[tuple[str, nn.Module]]:
     """
@@ -161,9 +155,8 @@ def randomize_layer(module: nn.Module) -> None:
             nn.init.uniform_(param, -bound, bound)
 
 
-# ─────────────────────────────────────────────
+
 # TEST 1: Model Parameter Randomization
-# ─────────────────────────────────────────────
 
 def test_model_randomization(
     model: nn.Module,
@@ -281,9 +274,8 @@ def test_model_randomization(
     }
 
 
-# ─────────────────────────────────────────────
+
 # TEST 2: Data Randomization
-# ─────────────────────────────────────────────
 
 def _train_shuffled_model(
     model_name: str,
@@ -437,9 +429,8 @@ def test_data_randomization(
     }
 
 
-# ─────────────────────────────────────────────
+
 # Plotting helpers
-# ─────────────────────────────────────────────
 
 def _plot_randomization_cascade(
     img_np: np.ndarray,
@@ -561,9 +552,7 @@ def _blend(img_np: np.ndarray, cam: np.ndarray, alpha: float = 0.5) -> np.ndarra
     return blended
 
 
-# ─────────────────────────────────────────────
 # Summary report
-# ─────────────────────────────────────────────
 
 def print_summary(results: list[dict]) -> None:
     """Print a formatted summary table of all test results."""
@@ -596,9 +585,7 @@ def print_summary(results: list[dict]) -> None:
     logger.info("=" * 60)
 
 
-# ─────────────────────────────────────────────
 # Entry point
-# ─────────────────────────────────────────────
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -633,12 +620,12 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # ── Setup ──────────────────────────────────
+    # ── Setup
     cfg    = load_config(args.config)
     set_seed(cfg["seed"])
     device = get_device()
 
-    # ── Load trained model ──────────────────────
+    # ── Load trained model 
     model = build_model(args.model, cfg).to(device)
     ckpt_path = args.checkpoint or f"{cfg['models']['save_dir']}/{args.model}_best.pth"
     load_checkpoint(ckpt_path, model, device=device)
