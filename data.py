@@ -29,9 +29,7 @@ CLASSES = ["airplane", "automobile", "bird", "cat", "deer",
            "dog", "frog", "horse", "ship", "truck"]
 
 
-# ─────────────────────────────────────────────
 # Transforms
-# ─────────────────────────────────────────────
 
 def get_transforms(cfg: dict, split: str):
     """
@@ -62,9 +60,7 @@ def get_transforms(cfg: dict, split: str):
         ])
 
 
-# ─────────────────────────────────────────────
 # Dataset loading
-# ─────────────────────────────────────────────
 
 def get_dataloaders(cfg: dict):
     """
@@ -101,9 +97,8 @@ def get_dataloaders(cfg: dict):
     return train_loader, val_loader, test_loader
 
 
-# ─────────────────────────────────────────────
+
 # Sanity checks
-# ─────────────────────────────────────────────
 
 def verify_class_balance(dataset, split_name: str) -> None:
     """
