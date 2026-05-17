@@ -21,9 +21,7 @@ import torch.nn as nn
 import torchvision.models as tv_models
 
 
-# ─────────────────────────────────────────────
 # 1. Baseline CNN
-# ─────────────────────────────────────────────
 
 class BaselineCNN(nn.Module):
     """
@@ -76,9 +74,7 @@ class BaselineCNN(nn.Module):
         return self.classifier(x)
 
 
-# ─────────────────────────────────────────────
 # 2. ResNet18 (pretrained or scratch)
-# ─────────────────────────────────────────────
 
 def build_resnet18(pretrained: bool = True, num_classes: int = 10) -> nn.Module:
     """
@@ -113,9 +109,7 @@ def build_resnet18(pretrained: bool = True, num_classes: int = 10) -> nn.Module:
     return model
 
 
-# ─────────────────────────────────────────────
 # Model factory
-# ─────────────────────────────────────────────
 
 def build_model(model_name: str, cfg: dict) -> nn.Module:
     """
