@@ -1,7 +1,5 @@
-# ============================================================
 # CIFAR-10 Grad-CAM Research Project — Master Config
 # Every value here has a reason. See comments.
-# ============================================================
 
 seed: 42  # Fixed for full reproducibility across runs
 
