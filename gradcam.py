@@ -43,9 +43,7 @@ from utils import get_logger, denormalize
 logger = get_logger("gradcam")
 
 
-# ─────────────────────────────────────────────
 # Core Grad-CAM class (from scratch)
-# ─────────────────────────────────────────────
 
 class GradCAM:
     """
@@ -167,9 +165,7 @@ class GradCAM:
         self.remove_hooks()
 
 
-# ─────────────────────────────────────────────
 # Target layer resolver
-# ─────────────────────────────────────────────
 
 def get_target_layer(model: nn.Module, model_name: str) -> nn.Module:
     """
@@ -187,9 +183,8 @@ def get_target_layer(model: nn.Module, model_name: str) -> nn.Module:
         raise ValueError(f"Don't know target layer for model: {model_name}")
 
 
-# ─────────────────────────────────────────────
+
 # Visualization
-# ─────────────────────────────────────────────
 
 def overlay_heatmap(
     image_np: np.ndarray,   # HWC uint8
@@ -275,9 +270,7 @@ def save_heatmap_grid(
     logger.info(f"[gradcam] Heatmap grid saved → {save_path}")
 
 
-# ─────────────────────────────────────────────
 # Library parity check
-# ─────────────────────────────────────────────
 
 def verify_against_library(
     model: nn.Module,
