@@ -39,9 +39,7 @@ ALL_MODELS  = ["baseline_cnn", "resnet18_pretrained", "resnet18_scratch"]
 ALL_STAGES  = ["data", "train", "eval", "gradcam", "parity", "sanity"]
 
 
-# ─────────────────────────────────────────────
 # Stage 1 — Data sanity checks
-# ─────────────────────────────────────────────
 
 def stage_data(cfg: dict) -> None:
     logger.info("━" * 60)
@@ -52,9 +50,8 @@ def stage_data(cfg: dict) -> None:
     logger.info(f"Stage 1 complete in {time.time()-t0:.1f}s")
 
 
-# ─────────────────────────────────────────────
 # Stage 2 — Training
-# ─────────────────────────────────────────────
+
 
 def stage_train(cfg: dict, models: list[str], epochs_override: int | None) -> None:
     logger.info("━" * 60)
@@ -69,9 +66,7 @@ def stage_train(cfg: dict, models: list[str], epochs_override: int | None) -> No
         logger.info(f"  Done in {(time.time()-t0)/60:.1f} min")
 
 
-# ─────────────────────────────────────────────
 # Stage 3 — Evaluation
-# ─────────────────────────────────────────────
 
 def stage_eval(cfg: dict, models: list[str], device) -> dict:
     """
@@ -228,9 +223,7 @@ def _save_accuracy_bar(results: dict, save_path: str) -> None:
     logger.info(f"  [eval] Accuracy comparison bar → {save_path}")
 
 
-# ─────────────────────────────────────────────
 # Stage 4 — Grad-CAM heatmap grids
-# ─────────────────────────────────────────────
 
 def stage_gradcam(cfg: dict, models: list[str], device) -> None:
     logger.info("━" * 60)
@@ -271,9 +264,7 @@ def stage_gradcam(cfg: dict, models: list[str], device) -> None:
         )
 
 
-# ─────────────────────────────────────────────
 # Stage 5 — Library parity check
-# ─────────────────────────────────────────────
 
 def stage_parity(cfg: dict, models: list[str], device) -> None:
     """
@@ -321,9 +312,7 @@ def stage_parity(cfg: dict, models: list[str], device) -> None:
         logger.info(f"  {model_name}: Spearman r = {r:.4f}")
 
 
-# ─────────────────────────────────────────────
 # Stage 6 — Adebayo sanity checks
-# ─────────────────────────────────────────────
 
 def stage_sanity(
     cfg: dict,
@@ -392,9 +381,7 @@ def stage_sanity(
         print_summary(results)
 
 
-# ─────────────────────────────────────────────
 # Entry point
-# ─────────────────────────────────────────────
 
 def parse_args():
     parser = argparse.ArgumentParser(
