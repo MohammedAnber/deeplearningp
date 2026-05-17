@@ -19,9 +19,7 @@ matplotlib.use("Agg")  # headless — no display needed on server
 import matplotlib.pyplot as plt
 
 
-# ─────────────────────────────────────────────
 # Reproducibility
-# ─────────────────────────────────────────────
 
 def set_seed(seed: int = 42) -> None:
     """
@@ -38,9 +36,7 @@ def set_seed(seed: int = 42) -> None:
     print(f"[seed] All RNG sources fixed to {seed}")
 
 
-# ─────────────────────────────────────────────
 # Config
-# ─────────────────────────────────────────────
 
 def load_config(path: str = "configs/config.yaml") -> dict:
     """Load YAML config into a plain dict."""
@@ -49,9 +45,7 @@ def load_config(path: str = "configs/config.yaml") -> dict:
     return cfg
 
 
-# ─────────────────────────────────────────────
 # Logging
-# ─────────────────────────────────────────────
 
 def get_logger(name: str, log_file: str | None = None) -> logging.Logger:
     """
@@ -79,9 +73,7 @@ def get_logger(name: str, log_file: str | None = None) -> logging.Logger:
     return logger
 
 
-# ─────────────────────────────────────────────
 # Checkpoint I/O
-# ─────────────────────────────────────────────
 
 def save_checkpoint(state: dict, path: str) -> None:
     """Save model checkpoint. state should include model, optimizer, epoch, metrics."""
@@ -103,9 +95,7 @@ def load_checkpoint(path: str, model: nn.Module, optimizer=None, device="cpu"):
     return state
 
 
-# ─────────────────────────────────────────────
 # Plotting helpers
-# ─────────────────────────────────────────────
 
 def plot_training_curves(
     train_losses: list,
@@ -162,9 +152,7 @@ def denormalize(tensor: torch.Tensor, mean: list, std: list) -> np.ndarray:
     return (img * 255).astype(np.uint8)
 
 
-# ─────────────────────────────────────────────
 # Device helper
-# ─────────────────────────────────────────────
 
 def get_device() -> torch.device:
     """Return CUDA if available, else CPU. Print which one is being used."""
