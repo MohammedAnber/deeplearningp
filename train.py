@@ -34,9 +34,7 @@ from models import build_model, count_parameters
 logger = get_logger("train", log_file="outputs/train.log")
 
 
-# ─────────────────────────────────────────────
 # One epoch: train
-# ─────────────────────────────────────────────
 
 def train_one_epoch(model, loader, criterion, optimizer, device, epoch):
     model.train()
@@ -61,9 +59,7 @@ def train_one_epoch(model, loader, criterion, optimizer, device, epoch):
     return avg_loss, accuracy
 
 
-# ─────────────────────────────────────────────
 # One epoch: evaluate
-# ─────────────────────────────────────────────
 
 @torch.no_grad()
 def evaluate(model, loader, criterion, device):
@@ -85,9 +81,7 @@ def evaluate(model, loader, criterion, device):
     return avg_loss, accuracy
 
 
-# ─────────────────────────────────────────────
 # Epoch-1 sanity check
-# ─────────────────────────────────────────────
 
 def check_initial_loss(loss: float, num_classes: int = 10, tol: float = 0.3) -> None:
     """
@@ -116,9 +110,7 @@ def check_initial_loss(loss: float, num_classes: int = 10, tol: float = 0.3) -> 
         )
 
 
-# ─────────────────────────────────────────────
 # Main training loop
-# ─────────────────────────────────────────────
 
 def train(model_name: str, cfg: dict, epochs_override: int | None = None) -> None:
     """
@@ -128,15 +120,15 @@ def train(model_name: str, cfg: dict, epochs_override: int | None = None) -> Non
     set_seed(cfg["seed"])
     device = get_device()
 
-    # ── Data ──────────────────────────────────
+    # ── Data
     train_loader, val_loader, _ = get_dataloaders(cfg)
 
-    # ── Model ─────────────────────────────────
+    # ── Model
     model = build_model(model_name, cfg).to(device)
     n_params = count_parameters(model)
     logger.info(f"[model] {model_name} | {n_params:,} trainable parameters")
 
-    # ── Optimizer & scheduler ─────────────────
+    # ── Optimizer & scheduler
     # SGD + momentum: still the standard for CIFAR-10 (Adam overfits more here)
     optimizer = optim.SGD(
         model.parameters(),
@@ -208,7 +200,7 @@ def train(model_name: str, cfg: dict, epochs_override: int | None = None) -> Non
                 path=f"{save_dir}/{model_name}_best.pth"
             )
 
-    # ── Post-training ──────────────────────────
+    # ── Post-training 
     # Save final checkpoint (for analysis; best is for evaluation)
     save_checkpoint(
         {
@@ -236,9 +228,7 @@ def train(model_name: str, cfg: dict, epochs_override: int | None = None) -> Non
     logger.info(f"Training complete. Best val accuracy: {best_val_acc:.2f}%")
 
 
-# ─────────────────────────────────────────────
 # Entry point
-# ─────────────────────────────────────────────
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train CIFAR-10 models")
