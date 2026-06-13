@@ -1,0 +1,15 @@
+% ── Table 1: Quantitative Interpretability Metrics ──────────────────
+\begin{table}[h]
+\centering
+\caption{Quantitative Interpretability Metrics for Grad-CAM Across Three CIFAR-10 Classifiers}
+\label{tab:xai_metrics}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Model} & \textbf{LCS (mean$\pm$std)} & \textbf{EEC (mean$\pm$std)} & \textbf{ICD} & \textbf{RS Monotonic?} \\
+\hline
+BaselineCNN & 0.148$\pm$0.076 & \textbf{0.484$\pm$0.076} & \textbf{0.845} & Yes \\
+ResNet18-scratch & 0.729$\pm$0.070 & 0.426$\pm$0.026 & 0.285 & No \\
+ResNet18-pretrained & \textbf{0.794$\pm$0.064} & 0.420$\pm$0.017 & 0.183 & No \\
+\hline
+\end{tabular}
+\end{table}

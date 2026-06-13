@@ -1,0 +1,24 @@
+% Table 2: Per-Class LCS Breakdown
+\begin{table}[h]
+\centering
+\caption{Per-Class Localization Consistency Score (LCS) — Mean Pairwise SSIM across 5 Images}
+\label{tab:lcs_per_class}
+\begin{tabular}{lccc}
+\hline
+\textbf{Class} & \textbf{BaselineCNN} & \textbf{ResNet18-scratch} & \textbf{ResNet18-pretrained} \\
+\hline
+Airplane & 0.083 & \textbf{0.813} & 0.673 \\
+Automobile & 0.281 & 0.720 & \textbf{0.785} \\
+Bird & 0.112 & 0.635 & \textbf{0.765} \\
+Cat & 0.241 & 0.755 & \textbf{0.843} \\
+Deer & 0.121 & 0.580 & \textbf{0.767} \\
+Dog & 0.134 & 0.721 & \textbf{0.913} \\
+Frog & 0.081 & \textbf{0.770} & 0.755 \\
+Horse & 0.144 & \textbf{0.780} & 0.756 \\
+Ship & 0.040 & 0.717 & \textbf{0.815} \\
+Truck & 0.239 & 0.801 & \textbf{0.867} \\
+\hline
+\textbf{Mean} & 0.148 & 0.729 & \textbf{0.794} \\
+\hline
+\end{tabular}
+\end{table}
